@@ -14,14 +14,11 @@ public class ColorPicker {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-        JLabel labelColor = new JLabel("Color");
         JTextField labelValue = new JTextField();
         JButton button = new JButton("Clipboard");
-        button.setText("Copy to clipboard");
+        button.setText("Clipboard");
 
-        panel.add(labelColor);
         panel.add(labelValue);
-        panel.add(button);
 
         try {
             Robot robot = new Robot();
@@ -31,26 +28,25 @@ public class ColorPicker {
             labelValue.setText(color);
             button.setAction(new AbstractAction() {
                 public void actionPerformed(ActionEvent e) {
-                    Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clip.setContents(new StringSelection(color), null);
+                    setClipboard(color);
                 }
             });
-
         } catch (AWTException e) {
         }
 
-        JWindow window = new JWindow();
-        window.getContentPane().add(panel);
-        window.setLocation(getMouseLocation());
-        window.pack();
-        window.setVisible(true);
+        JDialog dialog = new JDialog();
+        dialog.setTitle("ColorPicker");
+        dialog.setModal(true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.getContentPane().add(panel);
+        dialog.setLocation(getMouseLocation());
+        dialog.pack();
+        dialog.setVisible(true);
+    }
 
-//        JFrame frame = new JFrame("Color Picker");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.getContentPane().add(panel);
-//        frame.setLocation(getMouseLocation());
-//        frame.pack();
-//        frame.setVisible(true);
+    private static void setClipboard(String color) {
+        Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clip.setContents(new StringSelection(color), null);
     }
 
     private static String toString(Color pixelColor) {
