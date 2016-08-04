@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
 
 /**
  * Created by bruno on 02/08/16.
@@ -12,13 +11,13 @@ import java.awt.event.ActionEvent;
 public class ColorPicker {
     public static void main(String[] args) {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
 
         JTextField labelValue = new JTextField();
-        JButton button = new JButton("Clipboard");
-        button.setText("Clipboard");
+        JPanel colorPanel = new JPanel();
 
         panel.add(labelValue);
+        panel.add(colorPanel);
 
         try {
             Robot robot = new Robot();
@@ -26,11 +25,7 @@ public class ColorPicker {
             final String color = toString(pixelColor);
             System.out.println(color);
             labelValue.setText(color);
-            button.setAction(new AbstractAction() {
-                public void actionPerformed(ActionEvent e) {
-                    setClipboard(color);
-                }
-            });
+            colorPanel.setBackground(pixelColor);
         } catch (AWTException e) {
         }
 
